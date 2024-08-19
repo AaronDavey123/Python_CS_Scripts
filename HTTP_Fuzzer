@@ -1,0 +1,17 @@
+import requests
+import random
+import string
+
+def random_string(length=8):
+    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length))
+
+def fuzz_get_request(url, params):
+    for _ in range(100):  # Number of requests
+        fuzzed_params = {param: random_string() for param in params}
+        response = requests.get(url, params=fuzzed_params)
+        print(f"Sent: {fuzzed_params} - Status: {response.status_code}")
+
+if __name__ == "__main__":
+    url = "http://example.com/search"  # Replace with the target URL
+    params = ["q", "id"]  # Replace with the target parameters
+    fuzz_get_request(url, params)
